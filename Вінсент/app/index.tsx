@@ -5,7 +5,7 @@ import { Link } from "expo-router";
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text>Вінсент ван Гог</Text>
+      <Text style={{ fontSize: 30 }}>Вінсент ван Гог</Text>
       <Link href="/about" >
       
       <Image
@@ -13,6 +13,7 @@ export default function Index() {
         style={styles.image}
       />
       </Link>
+      <Text style={{ fontSize: 20 }}>Вінсент ван Гог</Text>
     </View>
   ); 
 }
@@ -20,7 +21,6 @@ export default function Index() {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
   image:{
