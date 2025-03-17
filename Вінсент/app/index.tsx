@@ -13,7 +13,7 @@ export default function Index() {
         style={styles.image}
       />
       </Link>
-      <Text style={{ fontSize: 20 }}>Вінсент ван Гог</Text>
+      <Text style={{ fontSize: 20 }}>Народжений: 30 Березня  1853 р<br></br>Помер: 29 липня 1890 (37 років) </Text>
     </View>
   ); 
 }
