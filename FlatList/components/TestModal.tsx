@@ -1,5 +1,6 @@
 import { Button, Modal,SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import Lists from './Lists'
 
 type TestModaProps = {
     visible: boolean,
@@ -15,8 +16,10 @@ const TectModal = ({visible, onClose}: TestModaProps) => {
             <SafeAreaView style={styles.modalContainer}>
                 <ScrollView>
                     <Text style={styles.text}>
-                        Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique quia perspiciatis aliquam rem non! Quasi suscipit harum possimus ea unde quam placeat repellat, esse facilis aliquam assumenda ducimus odit impedit?</Text>
-                    <Button title="Close" onPress={() => onClose}></Button>
+                        Lorem ipsum dolor sit amet. 
+                    </Text>
+                    <Lists></Lists>
+                    <Button title="Close" onPress={onClose}></Button>
                 </ScrollView>
             </SafeAreaView>    
         </Modal>

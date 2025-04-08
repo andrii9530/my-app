@@ -18,7 +18,13 @@ export default function NotFoundScreen() {
 }
 
   return (
-    <View>
+    <View style={styles.button}>
+      <SafeAreaView>
+
+        <Button title="віконце" onPress={showAlert}></Button>
+        <Button title="показати текст" onPress={() => setModalVisible(true)} />
+      </SafeAreaView>
+      
       <TestModal visible={modalVisible} onClose={() => setModalVisible(false)} />
     </View>
   );
@@ -35,4 +41,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingVertical: 15,
   },
+  button:{
+
+    marginTop: 30,
+  }
 });
