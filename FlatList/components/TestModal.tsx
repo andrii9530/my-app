@@ -2,7 +2,7 @@ import { Button, Modal,SafeAreaView, ScrollView, StyleSheet, Text, View } from '
 import React from 'react'
 import Lists from './Lists'
 
-type TestModaProps = {
+export type TestModaProps = {
     visible: boolean,
     onClose: () => void
 }
@@ -14,13 +14,11 @@ const TectModal = ({visible, onClose}: TestModaProps) => {
             transparent={true}
             visible={visible}>
             <SafeAreaView style={styles.modalContainer}>
-                <ScrollView>
-                    <Text style={styles.text}>
-                        Lorem ipsum dolor sit amet. 
-                    </Text>
-                    <Lists></Lists>
-                    <Button title="Close" onPress={onClose}></Button>
-                </ScrollView>
+                {/*<Text style={styles.text}>
+                    Lorem ipsum dolor sit amet. 
+                </Text>*/}
+                <Lists/>
+                <Button title="Close" onPress={onClose}></Button>
             </SafeAreaView>    
         </Modal>
     )
