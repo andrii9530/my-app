@@ -1,6 +1,12 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
-import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native';
+import React, { useState} from 'react';
+import { 
+  Alert,
+  Dimensions, 
+  StyleSheet, 
+  View,
+  Text
+} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -21,44 +27,56 @@ const AVAILABLE_WIDTH = SCREEN_WIDTH - HORIZONTAL_PADDING * 2;
 const COLORS = ['#6a5acd', '#4caf50', '#ff9800', '#f44336'];
 
 const QUESTIONS = [
-  'Мені подобається бути в центрі уваги?',
-  'Часто дію імпульсивно?',
-  'Люблю планувати все заздалегідь?',
-  'Швидко втомлююсь у компанії?',
-  'Маю добру витривалість до стресу?',
-];
-
+  'Вам подобається бути в центрі уваги?',
+  'Часто дієте імпульсивно?',
+  'Любите планувати все заздалегіть?',
+  'Швидко втомлюєтесь у компаніях?',
+  'Маєте добру витривалість до стресу?',
+]
 export default function App() {
+
+
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0); // рахуємо кількість "так"
+  const [score, setScore] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
 
   const progress = useSharedValue(0);
   const pressed = useSharedValue(false);
   const offset = useSharedValue(0);
 
-  const nextQuestion = (isYes: boolean) => {
-    if (isYes) {
-      setScore((prev) => prev + 1);
-    }
 
-    if (questionIndex < QUESTIONS.length - 1) {
-      setQuestionIndex((prev) => prev + 1);
-      progress.value = progress.value + 1;
-    } else {
-      const finalType =
-        score >= 4
-          ? 'Холерик'
-          : score >= 2
-          ? 'Сангвінік'
-          : score === 1
-          ? 'Флегматик'
-          : 'Меланхолік';
+const nextQuestion =(isYes: Boolean) => {
+  if (isYes){
+    setScore((prev) => prev + 1);
+  }
+  if (questionIndex < QUESTIONS.length - 1){
+    setQuestionIndex((prev) => prev + 1);
+    progress.value = progress.value + 1;
+  }
+  else{
+    setIsFinished(true);
+    const finalScore = isYes ? score + 1 : score;
+    const finalType =
+      score >= 4
+        ? 'Холерик'
+        : score >= 2
+        ? 'Сангвінік'
+        : score === 1
+        ? 'Флегматик'
+        : 'Меланхолік';
 
-      Alert.alert('Результат тесту', `Ваш тип темпераменту: ${finalType}`);
-    }
-  };
+        Alert.alert('Результат тесту', `Ваш темперамент:${finalType}`);
+  }
+};
 
-  const pan = Gesture.Pan()
+const restartTest = () => {
+  setScore(0);
+  setQuestionIndex(0);
+  setIsFinished(false);
+  progress.value = 0;
+};
+
+const pan = Gesture.Pan()
     .onBegin(() => {
       pressed.value = true;
     })
@@ -68,17 +86,18 @@ export default function App() {
     .onFinalize((event) => {
       pressed.value = false;
 
-      const threshold = 100;
-      if (event.translationX > threshold) {
-        runOnJS(nextQuestion)(true); // свайп вправо = "так"
-      } else if (event.translationX < -threshold) {
-        runOnJS(nextQuestion)(false); // свайп вліво = "ні"
+      const theshold = 100;
+      if (event.translationX > theshold){
+          runOnJS(nextQuestion)(true);
+      }
+      else if (event.translationX < -theshold){
+        runOnJS(nextQuestion)(false); 
       }
 
       offset.value = withSpring(0);
     });
 
-  const circleStyle = useAnimatedStyle(() => ({
+  const circleStyle  = useAnimatedStyle(() => ({
     transform: [
       { translateX: offset.value },
       { scale: withTiming(pressed.value ? 1.2 : 1) },
@@ -86,10 +105,10 @@ export default function App() {
     backgroundColor: pressed.value ? '#FFE04B' : '#b58df1',
   }));
 
-  const barStyle = useAnimatedStyle(() => {
+  const barStyle  = useAnimatedStyle(() => {
     return {
-      width: withSpring((progress.value / (QUESTIONS.length - 1)) * AVAILABLE_WIDTH),
-      backgroundColor: COLORS[questionIndex % COLORS.length],
+      width: withSpring((progress.value / 4) * AVAILABLE_WIDTH),
+      backgroundColor: COLORS[progress.value - 1] || COLORS[0],
     };
   });
 
@@ -105,7 +124,7 @@ export default function App() {
             </View>
           </Animated.View>
         </View>
-
+        
         <Text style={styles.questionText}>
           {QUESTIONS[questionIndex]}
         </Text>
@@ -116,6 +135,13 @@ export default function App() {
 
         <Text style={styles.swipeInfo}>⬅ Ні     |     Так ➡</Text>
       </View>
+      {isFinished && (
+      <View style={{ marginTop: 20 }}>
+        <Text onPress={restartTest} style={styles.restartButton}>
+          Почати знову
+        </Text>
+      </View>
+)}
     </GestureHandlerRootView>
   );
 }
@@ -127,7 +153,6 @@ const styles = StyleSheet.create({
   inner: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: HORIZONTAL_PADDING,
     gap: 30,
   },
@@ -168,5 +193,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#888',
     marginTop: 10,
+  },
+  restartButton: {
+    fontSize: 20,
+    color: '#6a5acd',
+    fontWeight: 'bold',
+    paddingVertical: 15,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: '#6a5acd',
+    borderRadius: 10,
   },
 });
