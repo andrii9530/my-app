@@ -1,3 +1,6 @@
+//виникли помилки які не зміг вирішити тому пишу заново*
+
+
 import { Button, Modal,SafeAreaView, ScrollView, StyleSheet, Text, View, Alert } from 'react-native'
 import React from 'react'
 import { useState } from 'react';

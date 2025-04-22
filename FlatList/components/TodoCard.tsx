@@ -14,7 +14,7 @@ const TodoCard = ({ item }: Props) => {
         </Text>
       </View>
     );
-  };
+};
 
 export default TodoCard
 
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
     text: {
       fontSize: 16,
     },
-  });
+});
